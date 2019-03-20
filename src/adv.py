@@ -69,10 +69,24 @@ def add_item(room, item_name, item_description):
 add_item(room['outside'], 'HealthGlobe', 'Glowey Globe of Shiny Red Stuffs')
 add_item(room['outside'], 'Sign', 'Danger, Keep out!')
 
+
+def pick_up_item(player, item_name):
+    for each_item in player.location.list:
+        if each_item.name == item_name:
+            print('found it!')
+            player.inventory.append(each_item)
+            player.location.list.remove(each_item)
+            break
+    else:
+        print(f'\n\n--Error: {item_name} does not exist in this room.--')
+
+
 # Main
 #
 # Make a new player object that is currently in the 'outside' room.
 player = Player(room['outside'])
+pick_up_item(player, 'HealthGlobe')
+
 # Write a loop that:
 #
 # * Prints the current room name
@@ -83,18 +97,18 @@ player = Player(room['outside'])
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-command = 1
+# command = 1
 
-while command != 'Q':
-    print(f'\n\nLocation: {player.location.name}\n')
-    print(player.location.description, '\n')
-    print('Visible Items:')
+# while command != 'Q':
+#     print(f'\n\nLocation: {player.location.name}\n')
+#     print(player.location.description, '\n')
+#     print('Visible Items:')
 
-    for each in player.location.list:
-        print('    '+each.name+': ', each.description)
+#     for each in player.location.list:
+#         print('    '+each.name+': ', each.description)
 
-    command = input(
-        '\nWhat do you do!? \nEnter N,S,E, or W to move. Q to quit: ')
+#     command = input(
+#         '\nWhat do you do!? \nEnter N,S,E, or W to move. Q to quit: ')
 
-    if command == 'N' or 'S' or 'E' or 'W':
-        move_player(player, command)
+#     if command == 'N' or 'S' or 'E' or 'W':
+#         move_player(player, command)
