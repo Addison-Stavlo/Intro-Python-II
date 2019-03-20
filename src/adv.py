@@ -4,7 +4,7 @@ from player import Player
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mouth beckons"),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -34,33 +34,35 @@ room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
 
-# Main
-#
-
-
 def move_player(player, direction):
     if direction == 'N':
         if hasattr(player.location, 'n_to'):
             player.location = player.location.n_to
         else:
-            print(f'Error: There is no room North of {player.location.name}')
+            print(
+                f'\n\n--Error: There is no room North of {player.location.name}--')
     if direction == 'S':
         if hasattr(player.location, 's_to'):
             player.location = player.location.s_to
         else:
-            print(f'Error: There is no room South of {player.location.name}')
+            print(
+                f'\n\n--Error: There is no room South of {player.location.name}--')
     if direction == 'E':
         if hasattr(player.location, 'e_to'):
             player.location = player.location.e_to
         else:
-            print(f'Error: There is no room East of {player.location.name}')
+            print(
+                f'\n\n--Error: There is no room East of {player.location.name}--')
     if direction == 'W':
         if hasattr(player.location, 'w_to'):
             player.location = player.location.w_to
         else:
-            print(f'Error: There is no room West of {player.location.name}')
+            print(
+                f'\n\n--Error: There is no room West of {player.location.name}--')
 
 
+# Main
+#
 # Make a new player object that is currently in the 'outside' room.
 player = Player(room['outside'])
 # Write a loop that:
@@ -69,14 +71,16 @@ player = Player(room['outside'])
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
 #
-command = 1
-while command != 'Q':
-    print(player.location.name)
-    print(player.location.description)
-    command = input('What do i do!? (N,S,E, or W to move.  Q to quit)')
-    if command == 'N' or 'S' or 'E' or 'W':
-        move_player(player, command)
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+command = 1
+
+while command != 'Q':
+    print(f'\n\nLocation: {player.location.name}\n')
+    print(player.location.description, '\n')
+    command = input('What do i do!? (N,S,E, or W to move.  Q to quit): ')
+
+    if command == 'N' or 'S' or 'E' or 'W':
+        move_player(player, command)
