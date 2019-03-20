@@ -75,6 +75,7 @@ def pick_up_item(player, item_name):
         if each_item.name == item_name:
             player.inventory.append(each_item)
             player.location.list.remove(each_item)
+            each_item.on_pick_up()
             break
     else:
         print(f'\n\n--Error: {item_name} does not exist in this room.--')
@@ -85,9 +86,16 @@ def drop_item(player, item_name):
         if each_item.name == item_name:
             player.location.list.append(each_item)
             player.inventory.remove(each_item)
+            each_item.on_drop()
             break
     else:
         print(f'\n\n--Error: {item_name} does not exist in inventory.--')
+
+
+def show_inventory(player):
+    print('\nInventory List:')
+    for each_item in player.inventory:
+        print(f'    {each_item.name}: {each_item.description}')
 
 
 # Main
@@ -129,5 +137,7 @@ while command != 'Q':
     elif command.startswith('drop'):
         item_name = command.split(' ')[1]
         drop_item(player, item_name)
+    elif command == 'i' or command == 'inventory':
+        show_inventory(player)
     else:
         print('what command is this!?')
