@@ -1,8 +1,116 @@
 from room import Room
 from player import Player
 from item import Item
-# Declare all the rooms
 
+
+# Setup Control Functions
+def move_player(player, direction):
+    if direction == 'N':
+        if hasattr(player.location, 'n_to'):
+            player.location = player.location.n_to
+        else:
+            print(
+                f'\n\n--Error: There is no room North of {player.location.name}--')
+    elif direction == 'S':
+        if hasattr(player.location, 's_to'):
+            player.location = player.location.s_to
+        else:
+            print(
+                f'\n\n--Error: There is no room South of {player.location.name}--')
+    elif direction == 'E':
+        if hasattr(player.location, 'e_to'):
+            player.location = player.location.e_to
+        else:
+            print(
+                f'\n\n--Error: There is no room East of {player.location.name}--')
+    elif direction == 'W':
+        if hasattr(player.location, 'w_to'):
+            player.location = player.location.w_to
+        else:
+            print(
+                f'\n\n--Error: There is no room West of {player.location.name}--')
+    else:
+        print('this should not trigger...')
+
+
+def add_item(room, item_name, item_description):
+    room.list.append(Item(item_name, item_description))
+
+
+def pick_up_item(player, item_name):
+    for each_item in player.location.list:
+        if each_item.name == item_name:
+            player.inventory.append(each_item)
+            player.location.list.remove(each_item)
+            each_item.on_pick_up()
+            break
+    else:
+        print(f'\n\n--Error: {item_name} does not exist in this room.--')
+    input("\npress 'Enter' to continue")
+
+
+def drop_item(player, item_name):
+    for each_item in player.inventory:
+        if each_item.name == item_name:
+            player.location.list.append(each_item)
+            player.inventory.remove(each_item)
+            each_item.on_drop()
+            break
+    else:
+        print(f'\n\n--Error: {item_name} does not exist in inventory.--')
+    input("\npress 'Enter' to continue")
+
+
+def show_inventory(player):
+    print('\nInventory List:')
+    for each_item in player.inventory:
+        print(f'    {each_item.name}: {each_item.description}')
+    input("\npress 'Enter' to continue")
+
+
+def print_region(player):
+    print(f'\n\n--Location: {player.location.name}--')
+    print('    '+player.location.description, '\n')
+    print('Visible Items:')
+
+    for each in player.location.list:
+        print('    '+each.name+': ', each.description)
+
+
+def print_commands():
+    print("\nEnter 'N', 'S', 'E', or 'W' to move.")
+    print("Enter 'take' or 'get' + the item's name to pick up an item.")
+    print("Enter 'drop' + the item's name to drop an item.")
+    print("Enter 'i' or 'inventory' to view your inventory")
+    print("Enter 'Q' to quit")
+    global command
+    command = input('\nWhat do you do?: ')
+    handle_input(command)
+
+
+def handle_input(command):
+    if command == 'N' \
+            or command == 'S' \
+            or command == 'E' \
+            or command == 'W':
+        move_player(player, command)
+    elif command.startswith('take') or command.startswith('get'):
+        item_name = command.split(' ')[1]
+        pick_up_item(player, item_name)
+    elif command.startswith('drop'):
+        item_name = command.split(' ')[1]
+        drop_item(player, item_name)
+    elif command == 'i' or command == 'inventory':
+        show_inventory(player)
+    elif command == 'help':
+        print_commands()
+    elif command == 'Q':
+        print('\n**You have ended the game.**\n')
+    else:
+        print('\nwhat command is this!?\n')
+
+
+# Declare all the rooms
 room = {
     'outside':  Room("Outside Cave Entrance",
                      "North of you, the cave mouth beckons"),
@@ -35,109 +143,15 @@ room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
 
-def move_player(player, direction):
-    if direction == 'N':
-        if hasattr(player.location, 'n_to'):
-            player.location = player.location.n_to
-        else:
-            print(
-                f'\n\n--Error: There is no room North of {player.location.name}--')
-    if direction == 'S':
-        if hasattr(player.location, 's_to'):
-            player.location = player.location.s_to
-        else:
-            print(
-                f'\n\n--Error: There is no room South of {player.location.name}--')
-    if direction == 'E':
-        if hasattr(player.location, 'e_to'):
-            player.location = player.location.e_to
-        else:
-            print(
-                f'\n\n--Error: There is no room East of {player.location.name}--')
-    if direction == 'W':
-        if hasattr(player.location, 'w_to'):
-            player.location = player.location.w_to
-        else:
-            print(
-                f'\n\n--Error: There is no room West of {player.location.name}--')
-
-
-def add_item(room, item_name, item_description):
-    room.list.append(Item(item_name, item_description))
-
-
+# instantiate/initialize player, room items, and command
+player = Player(room['outside'])
 add_item(room['outside'], 'HealthGlobe', 'Glowey Globe of Shiny Red Stuffs')
 add_item(room['outside'], 'Sign', 'Danger, Keep out!')
-
-
-def pick_up_item(player, item_name):
-    for each_item in player.location.list:
-        if each_item.name == item_name:
-            player.inventory.append(each_item)
-            player.location.list.remove(each_item)
-            each_item.on_pick_up()
-            break
-    else:
-        print(f'\n\n--Error: {item_name} does not exist in this room.--')
-
-
-def drop_item(player, item_name):
-    for each_item in player.inventory:
-        if each_item.name == item_name:
-            player.location.list.append(each_item)
-            player.inventory.remove(each_item)
-            each_item.on_drop()
-            break
-    else:
-        print(f'\n\n--Error: {item_name} does not exist in inventory.--')
-
-
-def show_inventory(player):
-    print('\nInventory List:')
-    for each_item in player.inventory:
-        print(f'    {each_item.name}: {each_item.description}')
-
+command = 1  # anything other than 'Q' to start main loop
 
 # Main
-#
-# Make a new player object that is currently in the 'outside' room.
-player = Player(room['outside'])
-
-# Write a loop that:
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
-command = 1
-
 while command != 'Q':
-    print(f'\n\nLocation: {player.location.name}\n')
-    print(player.location.description, '\n')
-    print('Visible Items:')
-
-    for each in player.location.list:
-        print('    '+each.name+': ', each.description)
-
+    print_region(player)
     command = input(
-        '\nWhat do you do!? \nEnter N,S,E, or W to move. Q to quit: ')
-
-    if command == 'N' \
-            or command == 'S' \
-            or command == 'E' \
-            or command == 'W':
-        move_player(player, command)
-    elif command.startswith('take') or command.startswith('get'):
-        item_name = command.split(' ')[1]
-        pick_up_item(player, item_name)
-    elif command.startswith('drop'):
-        item_name = command.split(' ')[1]
-        drop_item(player, item_name)
-    elif command == 'i' or command == 'inventory':
-        show_inventory(player)
-    else:
-        print('what command is this!?')
+        "\nWhat do you do? (Enter 'help' for command list): ")
+    handle_input(command)
