@@ -33,9 +33,33 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-#
+
 # Main
 #
+
+
+def move_player(player, direction):
+    if direction == 'N':
+        if hasattr(player.location, 'n_to'):
+            player.location = player.location.n_to
+        else:
+            print(f'Error: There is no room North of {player.location.name}')
+    if direction == 'S':
+        if hasattr(player.location, 's_to'):
+            player.location = player.location.s_to
+        else:
+            print(f'Error: There is no room South of {player.location.name}')
+    if direction == 'E':
+        if hasattr(player.location, 'e_to'):
+            player.location = player.location.e_to
+        else:
+            print(f'Error: There is no room East of {player.location.name}')
+    if direction == 'W':
+        if hasattr(player.location, 'w_to'):
+            player.location = player.location.w_to
+        else:
+            print(f'Error: There is no room West of {player.location.name}')
+
 
 # Make a new player object that is currently in the 'outside' room.
 player = Player(room['outside'])
@@ -50,6 +74,8 @@ while command != 'Q':
     print(player.location.name)
     print(player.location.description)
     command = input('What do i do!? (N,S,E, or W to move.  Q to quit)')
+    if command == 'N' or 'S' or 'E' or 'W':
+        move_player(player, command)
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
