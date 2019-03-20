@@ -76,8 +76,7 @@ def show_inventory(player):
 
 
 def print_region(player):
-    # clear console first
-    os.system('cls' if os.name == 'nt' else 'clear')
+
     print(f'\n\n--Location: {player.location.name}--')
     print('    '+player.location.description, '\n')
     print('Visible Items:')
@@ -95,6 +94,20 @@ def print_commands():
     global command
     command = input('\nWhat do you do?: ')
     handle_input(command)
+
+# Setup main Loop Functions
+
+
+def start_turn(player):
+    # clear console first
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print_region(player)
+
+
+def get_input():
+    global command
+    command = input(
+        "\nWhat do you do? (Enter 'help' for command list): ")
 
 
 def handle_input(command):
@@ -116,7 +129,7 @@ def handle_input(command):
     elif command == 'Q':
         print('\n**You have ended the game.**\n')
     else:
-        print('\nwhat command is this!?\n')
+        print('\nwhat command is this!?')
         input("\npress 'Enter' to continue")
 
 
@@ -161,7 +174,6 @@ command = 1  # anything other than 'Q' to start main loop
 
 # Main
 while command != 'Q':
-    print_region(player)
-    command = input(
-        "\nWhat do you do? (Enter 'help' for command list): ")
+    start_turn(player)
+    get_input()
     handle_input(command)
