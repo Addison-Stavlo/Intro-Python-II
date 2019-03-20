@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 # Declare all the rooms
 
 room = {
@@ -61,6 +62,13 @@ def move_player(player, direction):
                 f'\n\n--Error: There is no room West of {player.location.name}--')
 
 
+def add_item(room, item_name, item_description):
+    room.list.append(Item(item_name, item_description))
+
+
+add_item(room['outside'], 'HealthGlobe', 'Glowey Globe of Shiny Red Stuffs')
+add_item(room['outside'], 'Sign', 'Danger, Keep out!')
+
 # Main
 #
 # Make a new player object that is currently in the 'outside' room.
@@ -80,7 +88,13 @@ command = 1
 while command != 'Q':
     print(f'\n\nLocation: {player.location.name}\n')
     print(player.location.description, '\n')
-    command = input('What do i do!? (N,S,E, or W to move.  Q to quit): ')
+    print('Visible Items:')
+
+    for each in player.location.list:
+        print('    '+each.name+': ', each.description)
+
+    command = input(
+        '\nWhat do you do!? \nEnter N,S,E, or W to move. Q to quit: ')
 
     if command == 'N' or 'S' or 'E' or 'W':
         move_player(player, command)
