@@ -1,9 +1,11 @@
 from room import Room
 from player import Player
 from item import Item
-
+import os
 
 # Setup Control Functions
+
+
 def move_player(player, direction):
     if direction == 'N':
         if hasattr(player.location, 'n_to'):
@@ -11,26 +13,31 @@ def move_player(player, direction):
         else:
             print(
                 f'\n\n--Error: There is no room North of {player.location.name}--')
+            input("\npress 'Enter' to continue")
     elif direction == 'S':
         if hasattr(player.location, 's_to'):
             player.location = player.location.s_to
         else:
             print(
                 f'\n\n--Error: There is no room South of {player.location.name}--')
+            input("\npress 'Enter' to continue")
     elif direction == 'E':
         if hasattr(player.location, 'e_to'):
             player.location = player.location.e_to
         else:
             print(
                 f'\n\n--Error: There is no room East of {player.location.name}--')
+            input("\npress 'Enter' to continue")
     elif direction == 'W':
         if hasattr(player.location, 'w_to'):
             player.location = player.location.w_to
         else:
             print(
                 f'\n\n--Error: There is no room West of {player.location.name}--')
+            input("\npress 'Enter' to continue")
     else:
         print('this should not trigger...')
+        input("\npress 'Enter' to continue")
 
 
 def add_item(room, item_name, item_description):
@@ -69,6 +76,8 @@ def show_inventory(player):
 
 
 def print_region(player):
+    # clear console first
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(f'\n\n--Location: {player.location.name}--')
     print('    '+player.location.description, '\n')
     print('Visible Items:')
@@ -108,6 +117,7 @@ def handle_input(command):
         print('\n**You have ended the game.**\n')
     else:
         print('\nwhat command is this!?\n')
+        input("\npress 'Enter' to continue")
 
 
 # Declare all the rooms
