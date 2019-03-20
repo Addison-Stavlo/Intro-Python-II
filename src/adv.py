@@ -85,7 +85,6 @@ def pick_up_item(player, item_name):
 #
 # Make a new player object that is currently in the 'outside' room.
 player = Player(room['outside'])
-pick_up_item(player, 'HealthGlobe')
 
 # Write a loop that:
 #
@@ -97,18 +96,26 @@ pick_up_item(player, 'HealthGlobe')
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-# command = 1
+command = 1
 
-# while command != 'Q':
-#     print(f'\n\nLocation: {player.location.name}\n')
-#     print(player.location.description, '\n')
-#     print('Visible Items:')
+while command != 'Q':
+    print(f'\n\nLocation: {player.location.name}\n')
+    print(player.location.description, '\n')
+    print('Visible Items:')
 
-#     for each in player.location.list:
-#         print('    '+each.name+': ', each.description)
+    for each in player.location.list:
+        print('    '+each.name+': ', each.description)
 
-#     command = input(
-#         '\nWhat do you do!? \nEnter N,S,E, or W to move. Q to quit: ')
+    command = input(
+        '\nWhat do you do!? \nEnter N,S,E, or W to move. Q to quit: ')
 
-#     if command == 'N' or 'S' or 'E' or 'W':
-#         move_player(player, command)
+    if command == 'N' \
+            or command == 'S' \
+            or command == 'E' \
+            or command == 'W':
+        move_player(player, command)
+    elif command.startswith('take'):
+        item_name = command.split(' ')[1]
+        pick_up_item(player, item_name)
+    else:
+        print('what command is this!?')

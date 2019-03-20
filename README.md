@@ -42,9 +42,9 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
   - Add functionality to the main loop that prints out all the items that are
     visible to the player when they are in that room.
 
-- Add capability to add `Item`s to the player's inventory. The inventory can
-  also be a `list` of items "in" the player, similar to how `Item`s can be in a
-  `Room`.
+- [x] Add capability to add `Item`s to the player's inventory. The inventory can
+      also be a `list` of items "in" the player, similar to how `Item`s can be in a
+      `Room`.
 
 - Add a new type of sentence the parser can understand: two words.
 
