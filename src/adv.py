@@ -73,12 +73,21 @@ add_item(room['outside'], 'Sign', 'Danger, Keep out!')
 def pick_up_item(player, item_name):
     for each_item in player.location.list:
         if each_item.name == item_name:
-            print('found it!')
             player.inventory.append(each_item)
             player.location.list.remove(each_item)
             break
     else:
         print(f'\n\n--Error: {item_name} does not exist in this room.--')
+
+
+def drop_item(player, item_name):
+    for each_item in player.inventory:
+        if each_item.name == item_name:
+            player.location.list.append(each_item)
+            player.inventory.remove(each_item)
+            break
+    else:
+        print(f'\n\n--Error: {item_name} does not exist in inventory.--')
 
 
 # Main
@@ -114,8 +123,11 @@ while command != 'Q':
             or command == 'E' \
             or command == 'W':
         move_player(player, command)
-    elif command.startswith('take'):
+    elif command.startswith('take') or command.startswith('get'):
         item_name = command.split(' ')[1]
         pick_up_item(player, item_name)
+    elif command.startswith('drop'):
+        item_name = command.split(' ')[1]
+        drop_item(player, item_name)
     else:
         print('what command is this!?')

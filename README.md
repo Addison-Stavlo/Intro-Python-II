@@ -46,7 +46,7 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
       also be a `list` of items "in" the player, similar to how `Item`s can be in a
       `Room`.
 
-- Add a new type of sentence the parser can understand: two words.
+- [x] Add a new type of sentence the parser can understand: two words.
 
   - Until now, the parser could just understand one sentence form:
 
@@ -66,8 +66,8 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
 - Implement support for the verb `get` followed by an `Item` name. This will be
   used to pick up `Item`s.
 
-  - If the user enters `get` or `take` followed by an `Item` name, look at the
-    contents of the current `Room` to see if the item is there.
+  - [x] If the user enters `get` or `take` followed by an `Item` name, look at the
+        contents of the current `Room` to see if the item is there.
 
     - If it is there, remove it from the `Room` contents, and add it to the
       `Player` contents.
