@@ -55,26 +55,19 @@ def get_input():
 
 def handle_input():
     global command
-    if command == 'N' \
-            or command == 'S' \
-            or command == 'E' \
-            or command == 'W':
-        player.move(command)
-    elif command.startswith('take') or command.startswith('get'):
-        if player.can_see:
-            item_name = command.split(' ')[1]
-            player.pick_up_item(item_name)
-        else:
-            print('\n     Good luck finding that in the dark!')
-            input("\n     Press 'Enter' to continue.")
-    elif command.startswith('drop'):
-        if player.can_see:
-            item_name = command.split(' ')[1]
-            player.drop_item(item_name)
-        else:
-            print('\n     Good luck finding that in the dark!')
-            input("\n     Press 'Enter' to continue.")
-    elif command == 'i' or command == 'inventory':
+    lc_command = command.lower()
+    if lc_command == 'n' \
+            or lc_command == 's' \
+            or lc_command == 'e' \
+            or lc_command == 'w':
+        player.move(lc_command)
+    elif lc_command.startswith('take') or lc_command.startswith('get'):
+        item_name = command.split(' ')[1]
+        player.pick_up_item(item_name)
+    elif lc_command.startswith('drop'):
+        item_name = command.split(' ')[1]
+        player.drop_item(item_name)
+    elif lc_command == 'i' or lc_command == 'inventory':
         if player.can_see:
             player.show_inventory()
             get_input()
@@ -82,11 +75,11 @@ def handle_input():
         else:
             print('\n     How can you take inventory in the dark!?')
             input("\n     Press 'Enter' to continue.")
-    elif command == 'help':
+    elif lc_command == 'help':
         print_commands()
         get_input()
         handle_input()
-    elif command == 'Q':
+    elif lc_command == 'q':
         print('\n     **You have ended the game.**\n')
     else:
         print('\n     what command is this!?')
@@ -133,10 +126,10 @@ add_item(room['outside'], 'Sign', 'Danger, Keep out!')
 room['outside'].list.append(LightSource(
     'WillowWisp', 'A globe of shiny lights'))
 
-command = 1  # anything other than 'Q' to start main loop
+command = ''  # anything other than 'q' to start main loop
 
 # Main
-while command != 'Q':
+while command.lower() != 'q':
     start_turn(player)
     get_input()
     handle_input()

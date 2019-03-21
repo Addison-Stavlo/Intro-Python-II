@@ -10,22 +10,22 @@ class Player:
         self.can_see = False
 
     def move(self, direction):
-        if direction == 'N':
+        if direction == 'n':
             if hasattr(self.location, 'n_to'):
                 self.location = self.location.n_to
             else:
                 self.move_error('North')
-        elif direction == 'S':
+        elif direction == 's':
             if hasattr(self.location, 's_to'):
                 self.location = self.location.s_to
             else:
                 self.move_error('South')
-        elif direction == 'E':
+        elif direction == 'e':
             if hasattr(self.location, 'e_to'):
                 self.location = self.location.e_to
             else:
                 self.move_error('East')
-        elif direction == 'W':
+        elif direction == 'w':
             if hasattr(self.location, 'w_to'):
                 self.location = self.location.w_to
             else:
@@ -38,35 +38,6 @@ class Player:
         print(
             f'\n\n     --Error: There is no room {direction} of {self.location.name}--')
         input("\n     press 'Enter' to continue")
-
-    def pick_up_item(self, item_name):
-        for item in self.location.list:
-            if item.name == item_name:
-                self.inventory.append(item)
-                self.location.list.remove(item)
-                item.on_pick_up()
-                break
-        else:
-            print(
-                f'\n\n     --Error: {item_name} does not exist in this room.--')
-        input("\n     press 'Enter' to continue")
-
-    def drop_item(self, item_name):
-        for item in self.inventory:
-            if item.name == item_name:
-                self.location.list.append(item)
-                self.inventory.remove(item)
-                item.on_drop()
-                break
-        else:
-            print(
-                f'\n\n     --Error: {item_name} does not exist in inventory.--')
-        input("\n     press 'Enter' to continue")
-
-    def show_inventory(self):
-        print('\n          Inventory List:')
-        for item in self.inventory:
-            print(f'              {item.name}: {item.description}')
 
     def determine_sight(self):
         # is room illuminated?
@@ -85,3 +56,41 @@ class Player:
                 return True
         self.can_see = False
         return False
+
+    def try_to_see(self):
+        if self.can_see:
+            return True
+        else:
+            print('\n     Good luck finding that in the dark!')
+            input("\n     Press 'Enter' to continue.")
+
+    def pick_up_item(self, item_name):
+        if self.try_to_see():
+            for item in self.location.list:
+                if item.name.lower() == item_name.lower():
+                    self.inventory.append(item)
+                    self.location.list.remove(item)
+                    item.on_pick_up()
+                    break
+            else:
+                print(
+                    f'\n\n     --Error: "{item_name}" does not exist in this room.--')
+            input("\n     press 'Enter' to continue")
+
+    def drop_item(self, item_name):
+        if self.try_to_see():
+            for item in self.inventory:
+                if item.name.lower() == item_name.lower():
+                    self.location.list.append(item)
+                    self.inventory.remove(item)
+                    item.on_drop()
+                    break
+            else:
+                print(
+                    f'\n\n     --Error: "{item_name}" does not exist in inventory.--')
+            input("\n     press 'Enter' to continue")
+
+    def show_inventory(self):
+        print('\n          Inventory List:')
+        for item in self.inventory:
+            print(f'              {item.name}: {item.description}')
