@@ -122,8 +122,8 @@ In arbitrary order:
   - [x] Hint: `isinstance` might help you figure out if there's a `LightSource`
         among all the nearby `Item`s.
 
-  - Modify the `get`/`take` code to print "Good luck finding that in the dark!" if
-    the user tries to pick up an `Item` in the dark.
+  - [x] Modify the `get`/`take` code to print "Good luck finding that in the dark!" if
+        the user tries to pick up an `Item` in the dark.
 
 - Add methods to notify items when they are picked up or dropped
 

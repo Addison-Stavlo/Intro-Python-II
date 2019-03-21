@@ -140,13 +140,25 @@ def handle_input():
             or command == 'W':
         move_player(player, command)
     elif command.startswith('take') or command.startswith('get'):
-        item_name = command.split(' ')[1]
-        pick_up_item(player, item_name)
+        if can_see(player):
+            item_name = command.split(' ')[1]
+            pick_up_item(player, item_name)
+        else:
+            print('\n     Good luck finding that in the dark!')
+            input("\n     Press 'Enter' to continue.")
     elif command.startswith('drop'):
-        item_name = command.split(' ')[1]
-        drop_item(player, item_name)
+        if can_see(player):
+            item_name = command.split(' ')[1]
+            drop_item(player, item_name)
+        else:
+            print('\n     Good luck finding that in the dark!')
+            input("\n     Press 'Enter' to continue.")
     elif command == 'i' or command == 'inventory':
-        show_inventory(player)
+        if can_see(player):
+            show_inventory(player)
+        else:
+            print('\n     How can you take inventory in the dark!?')
+            input("\n     Press 'Enter' to continue.")
     elif command == 'help':
         print_commands()
     elif command == 'Q':
