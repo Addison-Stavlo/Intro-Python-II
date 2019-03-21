@@ -2,6 +2,8 @@
 # currently.
 from item import LightSource
 from termcolor import colored
+from room import room
+# from adv import room
 
 
 class Player:
@@ -86,6 +88,7 @@ class Player:
                     self.location.list.append(item)
                     self.inventory.remove(item)
                     item.on_drop()
+                    self.on_drop_event_trigger(item.name)
                     break
             else:
                 print(colored(
@@ -97,3 +100,10 @@ class Player:
         for item in self.inventory:
             print(
                 colored(f'              {item.name}: {item.description}', 'yellow', attrs=['bold']))
+
+    def on_drop_event_trigger(self, item_name):
+        if self.location.name == 'Trap Room' and item_name.lower() == 'willowwisp':
+            self.location.n_to = room['narrow']
+            room['traproom'].description = """Thankfully you unlocked this trap already."""
+            print(colored(f'\n     You hear the door behind you open.',
+                          'yellow', attrs=['bold']))
