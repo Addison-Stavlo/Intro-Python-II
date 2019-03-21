@@ -16,6 +16,7 @@ def print_region(player):
     print(f'\n\n     Location: {player.location.name}\n')
     print(textwrap.indent(
         text=f'     {player.location.description}\n', prefix='          ', predicate=lambda line: True))
+    player.location.show_exits()
     print('          Visible Items:')
     for each in player.location.list:
         print('              '+each.name+': ', each.description)
