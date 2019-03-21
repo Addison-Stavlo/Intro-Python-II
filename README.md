@@ -92,11 +92,11 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
 
 In arbitrary order:
 
-- Add more rooms
+- [x] Add more rooms
 
 - Add scoring
 
-- Subclass items into treasures
+- [x] Subclass items into treasures
 
 - [x] Add a subclass to `Item` called `LightSource`.
 
@@ -129,7 +129,7 @@ In arbitrary order:
 
 - Add light and darkness to the game
 
-- Add more items to the game.
+- [x] Add more items to the game.
 
 - Add a way to win.
 
@@ -168,4 +168,4 @@ In arbitrary order:
 - Similar to the `on_take` return value modification, above, have `on_attack`
   prevent the attack from succeeding unless the user possesses a `sword` item.
 
-- Come up with more stretch goals! The sky's the limit!
+- [x] Come up with more stretch goals! The sky's the limit! [TRAP ROOM!]
