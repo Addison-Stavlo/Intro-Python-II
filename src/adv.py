@@ -2,8 +2,8 @@ from room import Room
 from player import Player
 from item import Item, LightSource
 import os
-
 import textwrap
+from termcolor import colored
 
 # Setup Printing Functions
 
@@ -13,21 +13,26 @@ def add_item(room, item_name, item_description):
 
 
 def print_region(player):
-    print(f'\n\n     Location: {player.location.name}\n')
+    print(colored(
+        f'\n\n     Location: {player.location.name}\n', 'green', attrs=['bold']))
     print(textwrap.indent(
-        text=f'     {player.location.description}\n', prefix='          ', predicate=lambda line: True))
+        text=colored(f'     {player.location.description}\n', 'green', attrs=['bold']), prefix='          ', predicate=lambda line: True))
     player.location.show_exits()
-    print('          Visible Items:')
-    for each in player.location.list:
-        print('              '+each.name+': ', each.description)
+
+    if len(player.location.list) > 0:
+        print(colored('          Visible Items:',
+                      'yellow', attrs=['bold']))
+        for each in player.location.list:
+            print(
+                colored(f'              {each.name}: {each.description}', 'yellow', attrs=['bold']))
 
 
-help_commands = """
+help_commands = colored("""
     -Move- Enter 'N', 'S', 'E', or 'W'.
     -Take Item- Enter 'take' or 'get' + the item's name
     -Drop Item- Enter 'drop' + the item's name.
     -Inventory- Enter 'i' or 'inventory'
-    -Quit- Enter 'Q'"""
+    -Quit- Enter 'Q'""", 'red', attrs=['bold'])
 
 
 def print_commands():
@@ -44,7 +49,8 @@ def start_turn(player):
     if player.determine_sight():
         print_region(player)
     else:
-        print('    It is too dark to see anything.  Obtain a Light Source!')
+        print(colored('\n\n    It is too dark to see anything.  Obtain a Light Source!',
+                      'green', attrs=['bold']))
 
 
 def get_input():
@@ -73,16 +79,19 @@ def handle_input():
             get_input()
             handle_input()
         else:
-            print('\n     How can you take inventory in the dark!?')
+            print(colored(
+                '\n     How can you take inventory in the dark!?', 'red', attrs=['bold']))
             input("\n     Press 'Enter' to continue.")
     elif lc_command == 'help':
         print_commands()
         get_input()
         handle_input()
     elif lc_command == 'q':
-        print('\n     **You have ended the game.**\n')
+        print(colored('\n     **You have ended the game.**\n',
+                      'red', attrs=['bold']))
+        input("\n     press 'Enter' to continue")
     else:
-        print('\n     what command is this!?')
+        print(colored('\n     what command is this!?', 'red', attrs=['bold']))
         input("\n     press 'Enter' to continue")
 
 

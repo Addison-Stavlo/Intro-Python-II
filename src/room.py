@@ -2,6 +2,7 @@
 # description attributes.
 
 # making a change for initial push
+from termcolor import colored
 
 
 class Room:
@@ -22,14 +23,17 @@ class Room:
         if hasattr(self, 'w_to'):
             directions.append('West')
         if len(directions) == 0:
-            print(f'     You see no exit to this room!\n')
+            print(colored(f'     You see no exit to this room!\n',
+                          'green', attrs=['bold']))
         elif len(directions) == 1:
-            print(f'     You see an exit to the {directions[0]}\n')
+            print(
+                colored(f'     You see an exit to the {directions[0]}\n', 'green', attrs=['bold']))
         elif len(directions) == 2:
-            print(
-                f'     You see exits to the {directions[0]} and {directions[1]}\n')
+            print(colored(
+                f'     You see exits to the {directions[0]} and {directions[1]}\n', 'green', attrs=['bold']))
         elif len(directions) == 3:
-            print(
-                f'     You see exits to the {directions[0]}, {directions[1]}, and {directions[2]}\n')
+            print(colored(
+                f'     You see exits to the {directions[0]}, {directions[1]}, and {directions[2]}\n', 'green', attrs=['bold']))
         else:
-            print(f'     You see exits in all directions.\n')
+            print(colored(f'     You see exits in all directions.\n',
+                          'green', attrs=['bold']))

@@ -1,6 +1,7 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
 from item import LightSource
+from termcolor import colored
 
 
 class Player:
@@ -35,8 +36,8 @@ class Player:
             input("\n     press 'Enter' to continue")
 
     def move_error(self, direction):
-        print(
-            f'\n\n     --Error: There is no room {direction} of {self.location.name}--')
+        print(colored(
+            f'\n\n     --Error: There is no room {direction} of {self.location.name}--', 'red', attrs=['bold']))
         input("\n     press 'Enter' to continue")
 
     def determine_sight(self):
@@ -61,7 +62,8 @@ class Player:
         if self.can_see:
             return True
         else:
-            print('\n     Good luck finding that in the dark!')
+            print(colored('\n     Good luck finding that in the dark!',
+                          'red', attrs=['bold']))
             input("\n     Press 'Enter' to continue.")
 
     def pick_up_item(self, item_name):
@@ -73,8 +75,8 @@ class Player:
                     item.on_pick_up()
                     break
             else:
-                print(
-                    f'\n\n     --Error: "{item_name}" does not exist in this room.--')
+                print(colored(
+                    f'\n\n     --Error: "{item_name}" does not exist in this room.--', 'red', attrs=['bold']))
             input("\n     press 'Enter' to continue")
 
     def drop_item(self, item_name):
@@ -86,11 +88,12 @@ class Player:
                     item.on_drop()
                     break
             else:
-                print(
-                    f'\n\n     --Error: "{item_name}" does not exist in inventory.--')
+                print(colored(
+                    f'\n\n     --Error: "{item_name}" does not exist in inventory.--', 'red', attrs=['bold']))
             input("\n     press 'Enter' to continue")
 
     def show_inventory(self):
-        print('\n          Inventory List:')
+        print(colored('\n          Inventory List:', 'yellow', attrs=['bold']))
         for item in self.inventory:
-            print(f'              {item.name}: {item.description}')
+            print(
+                colored(f'              {item.name}: {item.description}', 'yellow', attrs=['bold']))
