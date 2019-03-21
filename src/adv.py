@@ -8,10 +8,6 @@ from termcolor import colored
 # Setup Printing Functions
 
 
-def add_item(room, item_name, item_description):
-    room.list.append(Item(item_name, item_description))
-
-
 def print_region(player):
     print(colored(
         f'\n\n     Location: {player.location.name}\n', 'green', attrs=['bold']))
@@ -41,7 +37,6 @@ def print_commands():
 
 
 # Setup main Loop Functions
-
 
 def start_turn(player):
     # clear console first
@@ -97,8 +92,9 @@ def handle_input():
 
 # instantiate/initialize player, room items, and command
 player = Player(room['outside'])
-add_item(room['outside'], 'HealthGlobe', 'Glowey Globe of Shiny Red Stuffs')
-add_item(room['outside'], 'Sign', 'Danger, Keep out!')
+room['outside'].list.append(
+    Item('HealthGlobe', 'Glowey Globe of Shiny Red Stuffs'))
+room['outside'].list.append(Item('Sign', 'Danger, Keep out!'))
 room['outside'].list.append(LightSource(
     'WillowWisp', 'A globe of shiny lights'))
 room['traproom'].list.append(LightSource(
