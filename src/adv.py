@@ -8,72 +8,8 @@ import textwrap
 # Setup Control Functions
 
 
-def move_player(player, direction):
-    if direction == 'N':
-        if hasattr(player.location, 'n_to'):
-            player.location = player.location.n_to
-        else:
-            move_error(player, 'North')
-    elif direction == 'S':
-        if hasattr(player.location, 's_to'):
-            player.location = player.location.s_to
-        else:
-            move_error(player, 'South')
-    elif direction == 'E':
-        if hasattr(player.location, 'e_to'):
-            player.location = player.location.e_to
-        else:
-            move_error(player, 'East')
-    elif direction == 'W':
-        if hasattr(player.location, 'w_to'):
-            player.location = player.location.w_to
-        else:
-            move_error(player, 'West')
-    else:
-        print('     this should not trigger...')
-        input("\n     press 'Enter' to continue")
-
-
-def move_error(player, direction):
-    print(
-        f'\n\n     --Error: There is no room {direction} of {player.location.name}--')
-    input("\n     press 'Enter' to continue")
-
-
 def add_item(room, item_name, item_description):
     room.list.append(Item(item_name, item_description))
-
-
-def pick_up_item(player, item_name):
-    for each_item in player.location.list:
-        if each_item.name == item_name:
-            player.inventory.append(each_item)
-            player.location.list.remove(each_item)
-            each_item.on_pick_up()
-            break
-    else:
-        print(f'\n\n     --Error: {item_name} does not exist in this room.--')
-    input("\n     press 'Enter' to continue")
-
-
-def drop_item(player, item_name):
-    for each_item in player.inventory:
-        if each_item.name == item_name:
-            player.location.list.append(each_item)
-            player.inventory.remove(each_item)
-            each_item.on_drop()
-            break
-    else:
-        print(f'\n\n     --Error: {item_name} does not exist in inventory.--')
-    input("\n     press 'Enter' to continue")
-
-
-def show_inventory(player):
-    print('\n          Inventory List:')
-    for each_item in player.inventory:
-        print(f'              {each_item.name}: {each_item.description}')
-    get_input()
-    handle_input()
 
 
 def print_region(player):
@@ -100,27 +36,13 @@ def print_commands():
     handle_input()
 
 
-def can_see(player):
-    # is room illuminated?
-    if player.location.is_lit:
-        return True
-    # or does room list contain a light source?
-    for item in player.location.list:
-        if isinstance(item, LightSource):
-            return True
-    # or does player inventory contain a light source?
-    for item in player.inventory:
-        if isinstance(item, LightSource):
-            return True
-    return False
-
 # Setup main Loop Functions
 
 
 def start_turn(player):
     # clear console first
     os.system('cls' if os.name == 'nt' else 'clear')
-    if can_see(player):
+    if player.can_see():
         print_region(player)
     else:
         print('    It is too dark to see anything.  Obtain a Light Source!')
@@ -138,24 +60,26 @@ def handle_input():
             or command == 'S' \
             or command == 'E' \
             or command == 'W':
-        move_player(player, command)
+        player.move(command)
     elif command.startswith('take') or command.startswith('get'):
-        if can_see(player):
+        if player.can_see():
             item_name = command.split(' ')[1]
-            pick_up_item(player, item_name)
+            player.pick_up_item(item_name)
         else:
             print('\n     Good luck finding that in the dark!')
             input("\n     Press 'Enter' to continue.")
     elif command.startswith('drop'):
-        if can_see(player):
+        if player.can_see():
             item_name = command.split(' ')[1]
-            drop_item(player, item_name)
+            player.drop_item(item_name)
         else:
             print('\n     Good luck finding that in the dark!')
             input("\n     Press 'Enter' to continue.")
     elif command == 'i' or command == 'inventory':
-        if can_see(player):
-            show_inventory(player)
+        if player.can_see():
+            player.show_inventory()
+            get_input()
+            handle_input()
         else:
             print('\n     How can you take inventory in the dark!?')
             input("\n     Press 'Enter' to continue.")
