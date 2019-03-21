@@ -5,7 +5,7 @@ import os
 
 import textwrap
 
-# Setup Control Functions
+# Setup Printing Functions
 
 
 def add_item(room, item_name, item_description):
@@ -33,8 +33,6 @@ help_commands = """
 def print_commands():
     print(textwrap.indent(text=help_commands,
                           prefix='      ', predicate=lambda line: True))
-    get_input()
-    handle_input()
 
 
 # Setup main Loop Functions
@@ -43,7 +41,7 @@ def print_commands():
 def start_turn(player):
     # clear console first
     os.system('cls' if os.name == 'nt' else 'clear')
-    if player.can_see():
+    if player.determine_sight():
         print_region(player)
     else:
         print('    It is too dark to see anything.  Obtain a Light Source!')
@@ -63,21 +61,21 @@ def handle_input():
             or command == 'W':
         player.move(command)
     elif command.startswith('take') or command.startswith('get'):
-        if player.can_see():
+        if player.can_see:
             item_name = command.split(' ')[1]
             player.pick_up_item(item_name)
         else:
             print('\n     Good luck finding that in the dark!')
             input("\n     Press 'Enter' to continue.")
     elif command.startswith('drop'):
-        if player.can_see():
+        if player.can_see:
             item_name = command.split(' ')[1]
             player.drop_item(item_name)
         else:
             print('\n     Good luck finding that in the dark!')
             input("\n     Press 'Enter' to continue.")
     elif command == 'i' or command == 'inventory':
-        if player.can_see():
+        if player.can_see:
             player.show_inventory()
             get_input()
             handle_input()
@@ -86,6 +84,8 @@ def handle_input():
             input("\n     Press 'Enter' to continue.")
     elif command == 'help':
         print_commands()
+        get_input()
+        handle_input()
     elif command == 'Q':
         print('\n     **You have ended the game.**\n')
     else:

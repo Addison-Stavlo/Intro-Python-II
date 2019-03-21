@@ -7,6 +7,7 @@ class Player:
     def __init__(self, location):
         self.location = location
         self.inventory = []
+        self.can_see = False
 
     def move(self, direction):
         if direction == 'N':
@@ -67,16 +68,20 @@ class Player:
         for item in self.inventory:
             print(f'              {item.name}: {item.description}')
 
-    def can_see(self):
+    def determine_sight(self):
         # is room illuminated?
         if self.location.is_lit:
+            self.can_see = True
             return True
         # or does room list contain a light source?
         for item in self.location.list:
             if isinstance(item, LightSource):
+                self.can_see = True
                 return True
         # or does self inventory contain a light source?
         for item in self.inventory:
             if isinstance(item, LightSource):
+                self.can_see = True
                 return True
+        self.can_see = False
         return False
