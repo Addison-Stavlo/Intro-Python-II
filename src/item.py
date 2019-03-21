@@ -4,7 +4,7 @@ class Item:
         self.description = description
 
     def on_pick_up(self):
-        print(f'\nYou pick up item: {self.name}')
+        print(f'\n     You pick up item: {self.name}')
 
     def on_drop(self):
-        print(f'\nYou drop item: {self.name}')
+        print(f'\n     You drop item: {self.name}')

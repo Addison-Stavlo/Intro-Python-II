@@ -3,6 +3,8 @@ from player import Player
 from item import Item
 import os
 
+import textwrap
+
 # Setup Control Functions
 
 
@@ -11,33 +13,31 @@ def move_player(player, direction):
         if hasattr(player.location, 'n_to'):
             player.location = player.location.n_to
         else:
-            print(
-                f'\n\n--Error: There is no room North of {player.location.name}--')
-            input("\npress 'Enter' to continue")
+            move_error(player, 'North')
     elif direction == 'S':
         if hasattr(player.location, 's_to'):
             player.location = player.location.s_to
         else:
-            print(
-                f'\n\n--Error: There is no room South of {player.location.name}--')
-            input("\npress 'Enter' to continue")
+            move_error(player, 'South')
     elif direction == 'E':
         if hasattr(player.location, 'e_to'):
             player.location = player.location.e_to
         else:
-            print(
-                f'\n\n--Error: There is no room East of {player.location.name}--')
-            input("\npress 'Enter' to continue")
+            move_error(player, 'East')
     elif direction == 'W':
         if hasattr(player.location, 'w_to'):
             player.location = player.location.w_to
         else:
-            print(
-                f'\n\n--Error: There is no room West of {player.location.name}--')
-            input("\npress 'Enter' to continue")
+            move_error(player, 'West')
     else:
-        print('this should not trigger...')
-        input("\npress 'Enter' to continue")
+        print('     this should not trigger...')
+        input("\n     press 'Enter' to continue")
+
+
+def move_error(player, direction):
+    print(
+        f'\n\n     --Error: There is no room {direction} of {player.location.name}--')
+    input("\n     press 'Enter' to continue")
 
 
 def add_item(room, item_name, item_description):
@@ -52,8 +52,8 @@ def pick_up_item(player, item_name):
             each_item.on_pick_up()
             break
     else:
-        print(f'\n\n--Error: {item_name} does not exist in this room.--')
-    input("\npress 'Enter' to continue")
+        print(f'\n\n     --Error: {item_name} does not exist in this room.--')
+    input("\n     press 'Enter' to continue")
 
 
 def drop_item(player, item_name):
@@ -64,36 +64,40 @@ def drop_item(player, item_name):
             each_item.on_drop()
             break
     else:
-        print(f'\n\n--Error: {item_name} does not exist in inventory.--')
-    input("\npress 'Enter' to continue")
+        print(f'\n\n     --Error: {item_name} does not exist in inventory.--')
+    input("\n     press 'Enter' to continue")
 
 
 def show_inventory(player):
-    print('\nInventory List:')
+    print('\n          Inventory List:')
     for each_item in player.inventory:
-        print(f'    {each_item.name}: {each_item.description}')
-    input("\npress 'Enter' to continue")
+        print(f'              {each_item.name}: {each_item.description}')
+    get_input()
+    handle_input()
 
 
 def print_region(player):
-
-    print(f'\n\n--Location: {player.location.name}--')
-    print('    '+player.location.description, '\n')
-    print('Visible Items:')
-
+    print(f'\n\n     Location: {player.location.name}\n')
+    print(textwrap.indent(
+        text=f'     {player.location.description}\n', prefix='          ', predicate=lambda line: True))
+    print('          Visible Items:')
     for each in player.location.list:
-        print('    '+each.name+': ', each.description)
+        print('              '+each.name+': ', each.description)
+
+
+help_commands = """
+    -Move- Enter 'N', 'S', 'E', or 'W'.
+    -Take Item- Enter 'take' or 'get' + the item's name
+    -Drop Item- Enter 'drop' + the item's name.
+    -Inventory- Enter 'i' or 'inventory'
+    -Quit- Enter 'Q'"""
 
 
 def print_commands():
-    print("\nEnter 'N', 'S', 'E', or 'W' to move.")
-    print("Enter 'take' or 'get' + the item's name to pick up an item.")
-    print("Enter 'drop' + the item's name to drop an item.")
-    print("Enter 'i' or 'inventory' to view your inventory")
-    print("Enter 'Q' to quit")
-    global command
-    command = input('\nWhat do you do?: ')
-    handle_input(command)
+    print(textwrap.indent(text=help_commands,
+                          prefix='      ', predicate=lambda line: True))
+    get_input()
+    handle_input()
 
 # Setup main Loop Functions
 
@@ -107,10 +111,11 @@ def start_turn(player):
 def get_input():
     global command
     command = input(
-        "\nWhat do you do? (Enter 'help' for command list): ")
+        "\n     What do you do? (Enter 'help' for command list): ")
 
 
-def handle_input(command):
+def handle_input():
+    global command
     if command == 'N' \
             or command == 'S' \
             or command == 'E' \
@@ -127,10 +132,10 @@ def handle_input(command):
     elif command == 'help':
         print_commands()
     elif command == 'Q':
-        print('\n**You have ended the game.**\n')
+        print('\n     **You have ended the game.**\n')
     else:
-        print('\nwhat command is this!?')
-        input("\npress 'Enter' to continue")
+        print('\n     what command is this!?')
+        input("\n     press 'Enter' to continue")
 
 
 # Declare all the rooms
@@ -152,7 +157,6 @@ to north. The smell of gold permeates the air."""),
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
-
 
 # Link rooms together
 
@@ -176,4 +180,4 @@ command = 1  # anything other than 'Q' to start main loop
 while command != 'Q':
     start_turn(player)
     get_input()
-    handle_input(command)
+    handle_input()
