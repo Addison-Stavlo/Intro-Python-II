@@ -100,13 +100,30 @@ def print_commands():
     handle_input()
 
 
+def can_see(player):
+    # is room illuminated?
+    if player.location.is_lit:
+        return True
+    # or does room list contain a light source?
+    for item in player.location.list:
+        if type(item).__name__ == 'LightSource':
+            return True
+    # or does player inventory contain a light source?
+    for item in player.inventory:
+        if type(item).__name__ == 'LightSource':
+            return True
+    return False
+
 # Setup main Loop Functions
 
 
 def start_turn(player):
     # clear console first
     os.system('cls' if os.name == 'nt' else 'clear')
-    print_region(player)
+    if can_see(player):
+        print_region(player)
+    else:
+        print('    It is too dark to see anything.  Obtain a Light Source!')
 
 
 def get_input():
@@ -152,11 +169,11 @@ into the darkness. Ahead to the north, a light flickers in
 the distance, but there is no way across the chasm."""),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""", is_lit=False),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""", is_lit=False),
 }
 
 # Link rooms together
@@ -175,8 +192,10 @@ room['treasure'].s_to = room['narrow']
 player = Player(room['outside'])
 add_item(room['outside'], 'HealthGlobe', 'Glowey Globe of Shiny Red Stuffs')
 add_item(room['outside'], 'Sign', 'Danger, Keep out!')
+# add lightsource to first room object list (add_item was made for top-level item class)
 room['outside'].list.append(LightSource(
     'WillowWisp', 'A globe of shiny lights'))
+
 command = 1  # anything other than 'Q' to start main loop
 
 # Main

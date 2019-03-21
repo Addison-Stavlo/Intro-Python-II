@@ -98,17 +98,17 @@ In arbitrary order:
 
 - Subclass items into treasures
 
-- Add a subclass to `Item` called `LightSource`.
+- [x] Add a subclass to `Item` called `LightSource`.
 
-  - During world creation, add a `lamp` `LightSource` to a convenient `Room`.
+  - [x] During world creation, add a `lamp` `LightSource` to a convenient `Room`.
 
-  - Override `on_drop` in `LightSource` that tells the player "It's not wise to
-    drop your source of light!" if the player drops it. (But still lets them drop
-    it.)
+  - [x] Override `on_drop` in `LightSource` that tells the player "It's not wise to
+        drop your source of light!" if the player drops it. (But still lets them drop
+        it.)
 
-  - Add an attribute to `Room` called `is_light` that is `True` if the `Room` is
-    naturally illuminated, or `False` if a `LightSource` is required to see what
-    is in the room.
+  - [x] Add an attribute to `Room` called `is_light` that is `True` if the `Room` is
+        naturally illuminated, or `False` if a `LightSource` is required to see what
+        is in the room.
 
   - Modify the main loop to test if there is light in the `Room` (i.e. if
     `is_light` is `True` **or** there is a `LightSource` item in the `Room`'s
