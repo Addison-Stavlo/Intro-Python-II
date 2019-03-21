@@ -1,6 +1,6 @@
 from room import Room
 from player import Player
-from item import Item
+from item import Item, LightSource
 import os
 
 import textwrap
@@ -99,6 +99,7 @@ def print_commands():
     get_input()
     handle_input()
 
+
 # Setup main Loop Functions
 
 
@@ -174,6 +175,8 @@ room['treasure'].s_to = room['narrow']
 player = Player(room['outside'])
 add_item(room['outside'], 'HealthGlobe', 'Glowey Globe of Shiny Red Stuffs')
 add_item(room['outside'], 'Sign', 'Danger, Keep out!')
+room['outside'].list.append(LightSource(
+    'WillowWisp', 'A globe of shiny lights'))
 command = 1  # anything other than 'Q' to start main loop
 
 # Main
