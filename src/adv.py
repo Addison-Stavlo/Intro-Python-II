@@ -106,11 +106,11 @@ def can_see(player):
         return True
     # or does room list contain a light source?
     for item in player.location.list:
-        if type(item).__name__ == 'LightSource':
+        if isinstance(item, LightSource):
             return True
     # or does player inventory contain a light source?
     for item in player.inventory:
-        if type(item).__name__ == 'LightSource':
+        if isinstance(item, LightSource):
             return True
     return False
 

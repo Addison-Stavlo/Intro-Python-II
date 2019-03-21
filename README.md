@@ -110,17 +110,17 @@ In arbitrary order:
         naturally illuminated, or `False` if a `LightSource` is required to see what
         is in the room.
 
-  - Modify the main loop to test if there is light in the `Room` (i.e. if
-    `is_light` is `True` **or** there is a `LightSource` item in the `Room`'s
-    contents **or** if there is a `LightSource` item in the `Player`'s contents).
+  - [x] Modify the main loop to test if there is light in the `Room` (i.e. if
+        `is_light` is `True` **or** there is a `LightSource` item in the `Room`'s
+        contents **or** if there is a `LightSource` item in the `Player`'s contents).
 
-  - If there is light in the room, display name, description, and contents as
-    normal.
+  - [x] If there is light in the room, display name, description, and contents as
+        normal.
 
-  - If there isn't, print out "It's pitch black!" instead.
+  - [x] If there isn't, print out "It's pitch black!" instead.
 
-  - Hint: `isinstance` might help you figure out if there's a `LightSource`
-    among all the nearby `Item`s.
+  - [x] Hint: `isinstance` might help you figure out if there's a `LightSource`
+        among all the nearby `Item`s.
 
   - Modify the `get`/`take` code to print "Good luck finding that in the dark!" if
     the user tries to pick up an `Item` in the dark.
